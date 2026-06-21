@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ミッション開始</title>
+<style>
+body {
+  background: black;
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  padding-top: 120px;
+}
+h1 {
+  font-size: 42px;
+  color: red;
+}
+p {
+  font-size: 22px;
+}
+</style>
+</head>
+<body>
+  <h1>ミッション開始！</h1>
+  <p>管理者認証システムを起動します</p>
+</body>
+</html>
