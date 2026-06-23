@@ -3,148 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>KBC001 管理者認証システム</title>
 
 <style>
-
 body{
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:url("24210B07-AD93-46FB-89AD-108233D33972.png") center center/cover no-repeat;
-font-family:sans-serif;
-color:white;
+  margin:0;
+  height:100vh;
+  background:url("IMG_0599.jpeg") center center / cover no-repeat;
+  color:white;
+  font-family:sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
 }
 
 .box{
-text-align:center;
-background:rgba(0,0,0,0.6);
-padding:30px;
-border-radius:20px;
-width:80%;
-max-width:500px;
+  background:rgba(0,0,0,0.45);
+  padding:25px;
+  border-radius:18px;
+  width:85%;
+  max-width:420px;
 }
 
 h1{
-color:red;
-font-size:50px;
-margin-bottom:10px;
+  color:#b00000;
+  font-size:42px;
+  margin:0;
+  letter-spacing:3px;
 }
 
 h2{
-color:red;
-margin-bottom:30px;
+  color:#b00000;
+  font-size:28px;
+  margin:10px 0 35px;
+}
+
+p{
+  font-size:20px;
 }
 
 input{
-width:80%;
-padding:15px;
-font-size:22px;
-background:black;
-color:white;
-border:2px solid red;
-border-radius:10px;
+  width:85%;
+  padding:14px;
+  font-size:22px;
+  text-align:center;
+  background:black;
+  color:white;
+  border:2px solid red;
+  border-radius:8px;
+  box-shadow:0 0 12px red;
 }
 
 button{
-margin-top:20px;
-padding:15px 40px;
-font-size:24px;
-background:black;
-color:red;
-border:2px solid red;
-border-radius:10px;
-cursor:pointer;
-}
-
-button:hover{
-background:red;
-color:white;
+  margin-top:22px;
+  padding:14px 55px;
+  font-size:24px;
+  background:black;
+  color:red;
+  border:2px solid red;
+  border-radius:8px;
+  box-shadow:0 0 12px red;
 }
 
 #result{
-margin-top:20px;
-font-size:24px;
-font-weight:bold;
+  margin:25px auto 0;
+  padding:14px;
+  font-size:22px;
+  border:1px solid #555;
+  border-radius:8px;
+  background:rgba(0,0,0,0.7);
 }
 
+#miss{
+  margin-top:70px;
+  font-size:20px;
+}
+
+#miss span{
+  color:red;
+  font-size:30px;
+  font-weight:bold;
+}
+
+.notice{
+  position:fixed;
+  bottom:20px;
+  left:5%;
+  right:5%;
+  padding:12px;
+  color:red;
+  border:1px solid #555;
+  background:rgba(0,0,0,0.75);
+  border-radius:8px;
+  font-size:16px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="box">
+  <h1>KBC001</h1>
+  <h2>管理者認証システム</h2>
 
-<h1>KBC001</h1>
-<h2>管理者認証システム</h2>
+  <p>管理者コードを入力せよ</p>
 
-<p>管理者コードを入力せよ</p>
+  <input id="code" type="password" placeholder="コードを入力">
 
-<input id="code" type="password">
+  <br>
 
-<br>
+  <button onclick="checkCode()">認証</button>
 
-<button onclick="checkCode()">
-認証
-</button>
+  <div id="result">認証待機中...</div>
 
-<div id="result">
-認証待機中...
+  <div id="miss">失敗回数：<span id="count">0</span> / 3</div>
 </div>
 
+<div class="notice">
+  【注意】認証に3回失敗すると、不正アクセス検知が発動します。
 </div>
 
 <script>
+let miss = 0;
 
-let miss=0;
+function speak(text){
+  const voice = new SpeechSynthesisUtterance(text);
+  voice.lang = "ja-JP";
+  voice.rate = 0.9;
+  speechSynthesis.speak(voice);
+}
 
 function checkCode(){
+  const code = document.getElementById("code").value;
+  const result = document.getElementById("result");
+  const count = document.getElementById("count");
 
-let code=document.getElementById("code").value;
+  if(code === "KBC001"){
+    result.style.color = "lime";
+    result.innerHTML = "管理者変更完了！";
+    speak("管理者変更完了");
 
-if(code==="KBC001"){
+  }else{
+    miss++;
+    count.innerHTML = miss;
+    result.style.color = "red";
 
-document.getElementById("result").innerHTML=
-"✅ 管理者変更完了！";
-
-let voice=new SpeechSynthesisUtterance(
-"管理者変更完了"
-);
-
-voice.lang="ja-JP";
-
-speechSynthesis.speak(voice);
-
-setTimeout(function(){
-
-window.location.href=
-"https://taro-tousouchu.github.io/tousouchu/";
-
-},3000);
-
+    if(miss >= 3){
+      result.innerHTML = "🚨 不正アクセス検知 🚨";
+      speak("不正アクセスを検知しました");
+    }else{
+      result.innerHTML = "認証失敗";
+      speak("認証失敗");
+    }
+  }
 }
-
-else{
-
-miss++;
-
-document.getElementById("result").innerHTML=
-"❌ 認証失敗";
-
-if(miss>=3){
-
-document.getElementById("result").innerHTML=
-"🚨 不正アクセス検知";
-
-}
-
-}
-
-}
-
 </script>
 
 </body>
